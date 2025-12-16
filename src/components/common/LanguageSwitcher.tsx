@@ -9,9 +9,9 @@ const LanguageSwitcher = () => {
   const { locale, setLocale, t } = useI18n();
 
   const languages: { code: Locale; label: string; flag: string }[] = [
-    { code: 'vi', label: t('settings.lang.vi'), flag: '🇻🇳' },
-    { code: 'en', label: t('settings.lang.en'), flag: '🇺🇸' },
-    { code: 'zh', label: t('settings.lang.zh'), flag: '🇨🇳' },
+    { code: 'vi', label: t('lang-vi'), flag: '🇻🇳' },
+    { code: 'en', label: t('lang-en'), flag: '🇺🇸' },
+    { code: 'zh', label: t('lang-zh'), flag: '🇨🇳' },
   ];
 
   // Close menu when clicking outside
@@ -42,8 +42,8 @@ const LanguageSwitcher = () => {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="p-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors"
-        title={t('settings.language')}
-        aria-label={t('settings.language')}
+        title={t('language')}
+        aria-label={t('language')}
       >
         <Globe className="w-5 h-5 text-gray-700 dark:text-gray-300" />
       </button>

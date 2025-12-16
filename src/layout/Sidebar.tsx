@@ -1,12 +1,13 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { 
-  Home, 
-  Video, 
-  Layout, 
-  FolderOpen, 
-  ShoppingBag, 
-  GraduationCap, 
-  Wallet, 
+  Store,
+  Footprints,
+  Video,
+  Image,
+  Layout,
+  ShoppingBag,
+  GraduationCap,
+  Wallet,
   Settings,
   ChevronLeft,
   LogOut
@@ -28,19 +29,29 @@ const Sidebar = ({ isCollapsed, onToggleCollapse, className }: SidebarProps) => 
   const { t } = useI18n();
 
   const navItems = [
-    { id: 'home', icon: Home, label: t('nav.home'), path: '/home' },
-    { id: 'create', icon: Video, label: t('nav.create'), path: '/home' },
-    { id: 'templates', icon: Layout, label: t('nav.templates'), path: '/templates' },
-    { id: 'projects', icon: FolderOpen, label: t('nav.projects'), path: '/projects' },
-    { id: 'marketplace', icon: ShoppingBag, label: t('nav.marketplace'), path: '/marketplace' },
-    { id: 'academy', icon: GraduationCap, label: t('nav.academy'), path: '/academy' },
-    { id: 'credits', icon: Wallet, label: t('nav.credits'), path: '/credits' },
-    { id: 'settings', icon: Settings, label: t('nav.settings'), path: '/settings' },
+    { id: 'pho-phuong', icon: Store, label: t('pho-phuong'), path: '/home' },
+    { id: 'dao-pho', icon: Footprints, label: t('dao-pho'), path: '/dao-pho' },
+    { id: 'xuong-video', icon: Video, label: t('xuong-video'), path: '/xuong-video' },
+    { id: 'xuong-hinh-anh', icon: Image, label: t('xuong-hinh-anh'), path: '/xuong-hinh-anh' },
+    { id: 'mau-pho', icon: Layout, label: t('mau-pho'), path: '/templates' },
+    { id: 'cho-pho', icon: ShoppingBag, label: t('cho-pho'), path: '/marketplace' },
+    { id: 'hoc-vien-pho', icon: GraduationCap, label: t('hoc-vien-pho'), path: '/academy' },
+    { id: 'vi-pho', icon: Wallet, label: t('vi-pho'), path: '/credits' },
+    { id: 'cai-dat', icon: Settings, label: t('cai-dat'), path: '/settings' },
   ];
 
-  const isActive = (path: string) => {
-    if (path === '/home') {
-      return location.pathname === '/home' || location.pathname.startsWith('/streets');
+  const isActive = (path: string, id: string) => {
+    // Phố Phường - only /home
+    if (id === 'pho-phuong') {
+      return location.pathname === '/home';
+    }
+    // Dạo Phố - /dao-pho and /streets/:id
+    if (id === 'dao-pho') {
+      return location.pathname === '/dao-pho' || location.pathname.startsWith('/streets');
+    }
+    // Xưởng Video/Hình Ảnh - when in creation mode
+    if (id === 'xuong-video' || id === 'xuong-hinh-anh') {
+      return location.pathname.startsWith('/xuong-');
     }
     return location.pathname === path;
   };
@@ -82,7 +93,7 @@ const Sidebar = ({ isCollapsed, onToggleCollapse, className }: SidebarProps) => 
             className={cn(
               'w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200',
               'hover:bg-orange-50 dark:hover:bg-orange-900/20 group',
-              isActive(item.path)
+              isActive(item.path, item.id)
                 ? 'bg-orange-50 dark:bg-orange-900/20 text-primary'
                 : 'text-gray-700 dark:text-gray-300 hover:text-primary'
             )}
@@ -91,13 +102,13 @@ const Sidebar = ({ isCollapsed, onToggleCollapse, className }: SidebarProps) => 
             <item.icon 
               className={cn(
                 'w-5 h-5 flex-shrink-0 transition-colors',
-                isActive(item.path) ? 'text-primary' : 'text-gray-600 dark:text-gray-400 group-hover:text-primary'
+                isActive(item.path, item.id) ? 'text-primary' : 'text-gray-600 dark:text-gray-400 group-hover:text-primary'
               )} 
             />
             {!isCollapsed && (
               <span className="font-medium text-sm whitespace-nowrap">{item.label}</span>
             )}
-            {isActive(item.path) && !isCollapsed && (
+            {isActive(item.path, item.id) && !isCollapsed && (
               <div className="ml-auto w-1.5 h-1.5 bg-primary rounded-full" />
             )}
           </button>
@@ -132,10 +143,10 @@ const Sidebar = ({ isCollapsed, onToggleCollapse, className }: SidebarProps) => 
             'w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors',
             'text-gray-700 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600'
           )}
-          title={isCollapsed ? t('nav.logout') : undefined}
+          title={isCollapsed ? t('logout') : undefined}
         >
           <LogOut className="w-5 h-5 flex-shrink-0" />
-          {!isCollapsed && <span className="font-medium text-sm">{t('nav.logout')}</span>}
+          {!isCollapsed && <span className="font-medium text-sm">{t('logout')}</span>}
         </button>
       </div>
 

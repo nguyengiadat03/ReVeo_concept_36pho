@@ -30,7 +30,7 @@ const Topbar = ({ onMenuClick, onNewVideoClick }: TopbarProps) => {
           <div className="hidden sm:flex items-center gap-2 text-sm">
             <span className="text-gray-600 dark:text-gray-400">Home</span>
             <span className="text-gray-400 dark:text-gray-600">/</span>
-            <span className="text-gray-900 dark:text-gray-100 font-medium">{t('nav.home')}</span>
+            <span className="text-gray-900 dark:text-gray-100 font-medium">{t('pho-phuong')}</span>
           </div>
         </div>
 
@@ -40,7 +40,7 @@ const Topbar = ({ onMenuClick, onNewVideoClick }: TopbarProps) => {
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" />
             <input
               type="text"
-              placeholder={t('button.search') + '...'}
+              placeholder={t('search') + '...'}
               className="w-full pl-12 pr-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
             />
           </div>
@@ -54,7 +54,7 @@ const Topbar = ({ onMenuClick, onNewVideoClick }: TopbarProps) => {
             className="hidden sm:flex items-center gap-2 px-4 py-2.5 bg-primary text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-primary/30 transition-all"
           >
             <Plus className="w-5 h-5" />
-            <span className="text-sm">{t('button.newVideo')}</span>
+            <span className="text-sm">{t('new-video')}</span>
           </button>
 
           {/* Mobile New Video Button */}
@@ -87,7 +87,7 @@ const Topbar = ({ onMenuClick, onNewVideoClick }: TopbarProps) => {
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" />
           <input
             type="text"
-            placeholder={t('button.search') + '...'}
+            placeholder={t('search') + '...'}
             className="w-full pl-12 pr-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
           />
         </div>

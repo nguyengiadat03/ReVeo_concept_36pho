@@ -21,13 +21,13 @@ const HomePage = () => {
         <div className="space-y-4">
           <div className="flex items-center gap-2">
             <Sparkles className="w-6 h-6 text-primary" />
-            <span className="text-sm font-semibold text-primary">{t('home.welcome')}</span>
+            <span className="text-sm font-semibold text-primary">{t('welcome')}</span>
           </div>
           
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-gray-100">
-            {t('home.title')}{' '}
+            {t('welcome')}{' '}
             <span className="relative inline-block">
-              <span className="text-gradient">{t('home.title.highlight')}</span>
+              <span className="text-gradient">{t('title')}</span>
               <svg
                 className="absolute -bottom-2 left-0 w-full"
                 height="8"
@@ -52,7 +52,7 @@ const HomePage = () => {
           </h1>
           
           <p className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl">
-            {t('home.subtitle')}
+            {t('subtitle')}
           </p>
         </div>
 
@@ -84,7 +84,7 @@ const HomePage = () => {
             <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-800">
               <div className="flex items-center gap-2 mb-4">
                 <Clock className="w-5 h-5 text-primary" />
-                <h3 className="font-bold text-gray-900 dark:text-gray-100">{t('home.recent')}</h3>
+                <h3 className="font-bold text-gray-900 dark:text-gray-100">{t('recent')}</h3>
               </div>
               <div className="space-y-3">
                 {recentStreets.map((street) => (
@@ -101,7 +101,7 @@ const HomePage = () => {
                         {street.name}
                       </p>
                       <p className="text-xs text-gray-600 dark:text-gray-400">
-                        {street.subcategories.length} {t('common.categories')}
+                        {street.subcategories.length} {t('categories')}
                       </p>
                     </div>
                   </button>
@@ -113,7 +113,7 @@ const HomePage = () => {
             <div className="bg-gradient-to-br from-orange-50 to-pink-50 dark:from-orange-900/20 dark:to-pink-900/20 rounded-2xl p-6 border border-orange-100 dark:border-orange-900/30">
               <div className="flex items-center gap-2 mb-4">
                 <Star className="w-5 h-5 text-primary" />
-                <h3 className="font-bold text-gray-900 dark:text-gray-100">{t('home.recommended')}</h3>
+                <h3 className="font-bold text-gray-900 dark:text-gray-100">{t('recommended')}</h3>
               </div>
               <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
                 Dựa trên lịch sử của bạn, chúng tôi nghĩ bạn sẽ thích:
@@ -136,7 +136,7 @@ const HomePage = () => {
 
             {/* Quick Start */}
             <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-800">
-              <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-4">{t('home.quickstart')}</h3>
+              <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-4">{t('quickstart')}</h3>
               <ol className="space-y-3 text-sm text-gray-700 dark:text-gray-300">
                 <li className="flex items-start gap-2">
                   <span className="flex-shrink-0 w-5 h-5 bg-primary text-white rounded-full flex items-center justify-center text-xs font-bold">1</span>

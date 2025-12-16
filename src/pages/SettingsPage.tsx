@@ -28,15 +28,15 @@ const SettingsPage = () => {
   };
 
   const themeOptions: { value: typeof theme; label: string; icon: typeof Sun }[] = [
-    { value: 'light', label: t('settings.theme.light'), icon: Sun },
-    { value: 'dark', label: t('settings.theme.dark'), icon: Moon },
-    { value: 'system', label: t('settings.theme.system'), icon: Monitor },
+    { value: 'light', label: t('theme-light'), icon: Sun },
+    { value: 'dark', label: t('theme-dark'), icon: Moon },
+    { value: 'system', label: t('theme-system'), icon: Monitor },
   ];
 
   const languageOptions: { code: Locale; label: string; flag: string }[] = [
-    { code: 'vi', label: t('settings.lang.vi'), flag: '🇻🇳' },
-    { code: 'en', label: t('settings.lang.en'), flag: '🇺🇸' },
-    { code: 'zh', label: t('settings.lang.zh'), flag: '🇨🇳' },
+    { code: 'vi', label: t('lang-vi'), flag: '🇻🇳' },
+    { code: 'en', label: t('lang-en'), flag: '🇺🇸' },
+    { code: 'zh', label: t('lang-zh'), flag: '🇨🇳' },
   ];
 
   return (
@@ -45,10 +45,10 @@ const SettingsPage = () => {
         {/* Header */}
         <div className="space-y-4">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100">
-            {t('settings.title')}
+            {t('cai-dat')}
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-400">
-            {t('settings.subtitle')}
+            Quản lý tài khoản và tùy chọn
           </p>
         </div>
 
@@ -61,7 +61,7 @@ const SettingsPage = () => {
                 <div className="w-10 h-10 bg-gradient-to-br from-orange-50 to-pink-50 dark:from-orange-900/20 dark:to-pink-900/20 rounded-xl flex items-center justify-center">
                   <User className="w-5 h-5 text-primary" />
                 </div>
-                <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">{t('settings.profile')}</h2>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">{t('profile')}</h2>
               </div>
 
               <div className="space-y-4">
@@ -96,7 +96,7 @@ const SettingsPage = () => {
                   className="px-6 py-3 bg-primary text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-primary/30 transition-all flex items-center gap-2"
                 >
                   <Save className="w-5 h-5" />
-                  {t('button.save')}
+                  {t('save')}
                 </button>
               </div>
             </div>
@@ -107,7 +107,7 @@ const SettingsPage = () => {
                 <div className="w-10 h-10 bg-gradient-to-br from-orange-50 to-pink-50 dark:from-orange-900/20 dark:to-pink-900/20 rounded-xl flex items-center justify-center">
                   <Sun className="w-5 h-5 text-primary" />
                 </div>
-                <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">{t('settings.appearance')}</h2>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">{t('appearance')}</h2>
               </div>
 
               <div className="space-y-3">
@@ -154,7 +154,7 @@ const SettingsPage = () => {
                 <div className="w-10 h-10 bg-gradient-to-br from-orange-50 to-pink-50 dark:from-orange-900/20 dark:to-pink-900/20 rounded-xl flex items-center justify-center">
                   <Globe className="w-5 h-5 text-primary" />
                 </div>
-                <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">{t('settings.language')}</h2>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">{t('language')}</h2>
               </div>
 
               <div className="space-y-3">
@@ -196,7 +196,7 @@ const SettingsPage = () => {
                 <div className="w-10 h-10 bg-gradient-to-br from-orange-50 to-pink-50 dark:from-orange-900/20 dark:to-pink-900/20 rounded-xl flex items-center justify-center">
                   <Bell className="w-5 h-5 text-primary" />
                 </div>
-                <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">{t('settings.notifications')}</h2>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">{t('notifications')}</h2>
               </div>
 
               <div className="space-y-4">

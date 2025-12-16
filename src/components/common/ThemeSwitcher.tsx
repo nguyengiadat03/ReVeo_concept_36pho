@@ -18,8 +18,8 @@ const ThemeSwitcher = () => {
     <button
       onClick={toggleTheme}
       className="p-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors"
-      title={actualTheme === 'dark' ? t('settings.theme.light') : t('settings.theme.dark')}
-      aria-label={actualTheme === 'dark' ? t('settings.theme.light') : t('settings.theme.dark')}
+      title={actualTheme === 'dark' ? t('theme-light') : t('theme-dark')}
+      aria-label={actualTheme === 'dark' ? t('theme-light') : t('theme-dark')}
     >
       {actualTheme === 'dark' ? (
         <Sun className="w-5 h-5 text-yellow-400" />
