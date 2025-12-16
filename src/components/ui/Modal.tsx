@@ -1,22 +1,36 @@
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect } from "react";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   title?: string;
   children: ReactNode;
+  size?: "sm" | "md" | "lg" | "xl";
 }
 
-const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
+const sizeClasses = {
+  sm: "max-w-sm",
+  md: "max-w-md",
+  lg: "max-w-2xl",
+  xl: "max-w-4xl",
+};
+
+const Modal = ({
+  isOpen,
+  onClose,
+  title,
+  children,
+  size = "md",
+}: ModalProps) => {
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
 
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     };
   }, [isOpen]);
 
@@ -28,24 +42,27 @@ const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
       onClick={onClose}
       role="dialog"
       aria-modal="true"
-      aria-labelledby={title ? 'modal-title' : undefined}
+      aria-labelledby={title ? "modal-title" : undefined}
     >
       <div
-        className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+        className={`bg-white dark:bg-gray-900 rounded-2xl shadow-2xl ${sizeClasses[size]} w-full max-h-[85vh] overflow-y-auto`}
         onClick={(e) => e.stopPropagation()}
       >
         {title && (
-          <div className="flex items-center justify-between p-6 border-b border-gray-100">
-            <h2 id="modal-title" className="text-2xl font-bold text-gray-900">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 dark:border-gray-800">
+            <h2
+              id="modal-title"
+              className="text-lg font-bold text-gray-900 dark:text-gray-100"
+            >
               {title}
             </h2>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
               aria-label="Đóng"
             >
               <svg
-                className="w-6 h-6 text-gray-500"
+                className="w-5 h-5 text-gray-500 dark:text-gray-400"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -60,7 +77,7 @@ const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
             </button>
           </div>
         )}
-        <div className="p-6">{children}</div>
+        <div className="p-5">{children}</div>
       </div>
     </div>
   );

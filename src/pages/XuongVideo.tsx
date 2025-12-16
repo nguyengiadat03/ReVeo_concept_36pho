@@ -1,127 +1,304 @@
-import { useNavigate } from 'react-router-dom';
-import { Video, Upload, Link as LinkIcon, Sparkles, ArrowLeft } from 'lucide-react';
-import AppShell from '../layout/AppShell';
-import { useI18n } from '../app/providers/I18nProvider';
+import { useState, useRef, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  Upload,
+  Link as LinkIcon,
+  Sparkles,
+  ArrowLeft,
+  X,
+  Loader2,
+  Download,
+  RotateCcw,
+  FileVideo,
+} from "lucide-react";
+import AppShell from "../layout/AppShell";
+
+interface UploadedFile {
+  file: File;
+  preview: string;
+}
 
 const XuongVideo = () => {
   const navigate = useNavigate();
-  const { t } = useI18n();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
+  const [productUrl, setProductUrl] = useState("");
+  const [isDragging, setIsDragging] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedVideo, setGeneratedVideo] = useState<string | null>(null);
+  const [selectedPreview, setSelectedPreview] = useState<string | null>(null);
+
+  // Mock video data
+  const mockVideos = [
+    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+  ];
+
+  const handleFileSelect = useCallback((files: FileList | null) => {
+    if (!files) return;
+    const newFiles: UploadedFile[] = [];
+    Array.from(files).forEach((file) => {
+      if (file.type.startsWith("image/") && file.size <= 10 * 1024 * 1024) {
+        const preview = URL.createObjectURL(file);
+        newFiles.push({ file, preview });
+      }
+    });
+    setUploadedFiles((prev) => [...prev, ...newFiles].slice(0, 5));
+    if (newFiles.length > 0) setSelectedPreview(newFiles[0].preview);
+  }, []);
+
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      setIsDragging(false);
+      handleFileSelect(e.dataTransfer.files);
+    },
+    [handleFileSelect]
+  );
+
+  const removeFile = (index: number) => {
+    setUploadedFiles((prev) => {
+      const newFiles = [...prev];
+      URL.revokeObjectURL(newFiles[index].preview);
+      newFiles.splice(index, 1);
+      if (selectedPreview === prev[index].preview) {
+        setSelectedPreview(newFiles[0]?.preview || null);
+      }
+      return newFiles;
+    });
+  };
+
+  const handleGenerate = async () => {
+    if (uploadedFiles.length === 0 && !productUrl) return;
+    setIsGenerating(true);
+    setGeneratedVideo(null);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    // Random mock video
+    const randomVideo =
+      mockVideos[Math.floor(Math.random() * mockVideos.length)];
+    setGeneratedVideo(randomVideo);
+    setIsGenerating(false);
+  };
+
+  const handleReset = () => {
+    setGeneratedVideo(null);
+    setUploadedFiles([]);
+    setProductUrl("");
+    setSelectedPreview(null);
+  };
+
+  const canGenerate = uploadedFiles.length > 0 || productUrl.trim().length > 0;
 
   return (
     <AppShell>
-      <div className="container-custom py-8 lg:py-12 space-y-8">
-        {/* Back Button */}
-        <button
-          onClick={() => navigate('/dao-pho')}
-          className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
-        >
-          <ArrowLeft className="w-5 h-5" />
-          <span className="text-sm font-medium">{t('back')}</span>
-        </button>
+      <div className="container-custom py-4 lg:py-6">
+        <div className="flex items-center gap-2 mb-4">
+          <button
+            onClick={() => navigate("/dao-pho")}
+            className="text-gray-600 dark:text-gray-400 hover:text-primary"
+          >
+            <ArrowLeft className="w-4 h-4" />
+          </button>
+          <span className="text-xs text-gray-500 dark:text-gray-400">
+            Quay lại
+          </span>
+        </div>
 
-        {/* Header */}
-        <div className="text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-50 to-pink-50 dark:from-orange-900/20 dark:to-pink-900/20 rounded-full border border-orange-200 dark:border-orange-900/50">
-            <Video className="w-5 h-5 text-primary" />
-            <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-              {t('video-studio')}
-            </span>
+        <div className="text-center mb-6">
+          <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-primary to-pink-500 rounded-xl mb-3">
+            <FileVideo className="w-6 h-6 text-white" />
           </div>
-
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-gray-100">
-            <span className="text-gradient">{t('video-studio')}</span>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+            Xưởng Video
           </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            {t('video-subtitle')}
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Tạo video bán hàng chuyên nghiệp với AI
           </p>
         </div>
 
-        {/* Main Content */}
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white dark:bg-gray-900 rounded-3xl p-8 lg:p-12 border border-gray-200 dark:border-gray-800 shadow-xl">
-            {/* Upload Section */}
-            <div className="space-y-6">
-              <div className="text-center">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-                  {t('upload-image')}
-                </h2>
-                <p className="text-gray-600 dark:text-gray-400">
-                  Tải lên ảnh sản phẩm hoặc nhập link để bắt đầu
-                </p>
+        <div className="max-w-4xl mx-auto bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6 shadow-sm">
+          {/* Upload Section */}
+          <div className="mb-6">
+            <div
+              onDrop={handleDrop}
+              onDragOver={(e) => {
+                e.preventDefault();
+                setIsDragging(true);
+              }}
+              onDragLeave={() => setIsDragging(false)}
+              onClick={() => fileInputRef.current?.click()}
+              className={`border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer transition-all ${
+                isDragging
+                  ? "border-primary bg-orange-50 dark:bg-orange-900/20 scale-[1.02]"
+                  : "border-gray-300 dark:border-gray-700 hover:border-primary hover:bg-gray-50 dark:hover:bg-gray-800"
+              }`}
+            >
+              <div className="w-16 h-16 bg-gradient-to-br from-orange-100 to-pink-100 dark:from-orange-900/30 dark:to-pink-900/30 rounded-2xl flex items-center justify-center mb-4">
+                <Upload className="w-8 h-8 text-primary" />
               </div>
-
-              {/* Upload Area */}
-              <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-2xl p-12 text-center hover:border-primary dark:hover:border-primary transition-colors cursor-pointer group">
-                <div className="space-y-4">
-                  <div className="w-20 h-20 mx-auto bg-gradient-to-br from-primary to-pink-500 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Upload className="w-10 h-10 text-white" />
-                  </div>
-                  <div>
-                    <p className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">
-                      Kéo thả ảnh vào đây
-                    </p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      hoặc click để chọn file
-                    </p>
-                  </div>
-                  <p className="text-xs text-gray-500 dark:text-gray-500">
-                    PNG, JPG, WEBP (max. 10MB)
-                  </p>
-                </div>
-              </div>
-
-              {/* Divider */}
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300 dark:border-gray-700" />
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-4 bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400">
-                    {t('or-url')}
-                  </span>
-                </div>
-              </div>
-
-              {/* URL Input */}
-              <div className="space-y-3">
-                <div className="relative">
-                  <LinkIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" />
-                  <input
-                    type="url"
-                    placeholder="https://shopee.vn/product/..."
-                    className="w-full pl-12 pr-4 py-4 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-                  />
-                </div>
-              </div>
-
-              {/* Generate Button */}
-              <button className="w-full px-8 py-4 bg-gradient-to-r from-primary to-pink-500 text-white font-bold text-lg rounded-xl hover:shadow-2xl hover:shadow-primary/30 transition-all hover:scale-105 flex items-center justify-center gap-3 group">
-                <Sparkles className="w-6 h-6 group-hover:rotate-12 transition-transform" />
-                <span>{t('generate-video')}</span>
-              </button>
+              <p className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-1">
+                Kéo và thả ảnh vào đây
+              </p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+                hoặc click để chọn file (tối đa 5 ảnh, mỗi ảnh &lt; 10MB)
+              </p>
+              <p className="text-xs text-gray-400">PNG, JPG, JPEG, WEBP</p>
             </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={(e) => handleFileSelect(e.target.files)}
+              className="hidden"
+            />
+          </div>
 
-            {/* Info */}
-            <div className="mt-8 p-6 bg-gradient-to-br from-orange-50 to-pink-50 dark:from-orange-900/20 dark:to-pink-900/20 rounded-2xl border border-orange-100 dark:border-orange-900/30">
-              <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-3">
-                💡 Tính năng đang phát triển
-              </h3>
-              <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
-                <li className="flex items-start gap-2">
-                  <span className="text-primary">•</span>
-                  <span>AI tự động tạo video từ ảnh sản phẩm</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary">•</span>
-                  <span>Tùy chỉnh template theo từng phố</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary">•</span>
-                  <span>Xuất video theo tỷ lệ TikTok, Shopee, Facebook</span>
-                </li>
-              </ul>
+          {/* Preview Thumbnails */}
+          {uploadedFiles.length > 0 && (
+            <div className="mb-6">
+              <div className="flex gap-3 overflow-x-auto pb-2">
+                {uploadedFiles.map((item, i) => (
+                  <div
+                    key={i}
+                    onClick={() => setSelectedPreview(item.preview)}
+                    className={`relative flex-shrink-0 cursor-pointer rounded-lg overflow-hidden border-2 transition-all ${
+                      selectedPreview === item.preview
+                        ? "border-primary shadow-lg scale-105"
+                        : "border-gray-200 dark:border-gray-700 hover:border-primary"
+                    }`}
+                  >
+                    <img
+                      src={item.preview}
+                      alt=""
+                      className="w-20 h-20 object-cover"
+                    />
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        removeFile(i);
+                      }}
+                      className="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors shadow-md"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* URL Input */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Hoặc nhập link sản phẩm
+            </label>
+            <div className="relative">
+              <LinkIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                type="url"
+                value={productUrl}
+                onChange={(e) => setProductUrl(e.target.value)}
+                placeholder="https://shopee.vn/product/..."
+                className="w-full pl-12 pr-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              />
             </div>
           </div>
+
+          {/* Instructions */}
+          <div className="mb-6 p-4 bg-orange-50 dark:bg-orange-900/20 rounded-xl border border-orange-200 dark:border-orange-900/30">
+            <p className="text-xs font-semibold text-orange-900 dark:text-orange-200 mb-2">
+              💡 Hướng dẫn
+            </p>
+            <ul className="text-xs text-orange-800 dark:text-orange-300 space-y-1">
+              <li>
+                • Tải lên ảnh sản phẩm hoặc dán link từ Shopee/Tiktok Shop
+              </li>
+              <li>• AI sẽ tự động tạo video bán hàng chuyên nghiệp</li>
+              <li>• Xuất video theo tỷ lệ 16:9, 9:16 hoặc Facebook</li>
+            </ul>
+          </div>
+
+          {/* Generate Button */}
+          <button
+            onClick={handleGenerate}
+            disabled={!canGenerate || isGenerating}
+            className={`w-full py-4 font-bold text-base rounded-xl flex items-center justify-center gap-3 transition-all ${
+              canGenerate && !isGenerating
+                ? "bg-gradient-to-r from-primary to-pink-500 text-white hover:shadow-xl hover:scale-[1.02]"
+                : "bg-gray-200 dark:bg-gray-700 text-gray-500 cursor-not-allowed"
+            }`}
+          >
+            {isGenerating ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" />
+                <span>Đang tạo video...</span>
+              </>
+            ) : (
+              <>
+                <Sparkles className="w-5 h-5" />
+                <span>Tạo Video</span>
+              </>
+            )}
+          </button>
+
+          {/* Output Section */}
+          {(isGenerating || generatedVideo) && (
+            <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-800">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                  🎬 Video đầu ra
+                </h3>
+                {generatedVideo && (
+                  <button
+                    onClick={handleReset}
+                    className="text-sm text-gray-500 hover:text-primary flex items-center gap-2 transition-colors"
+                  >
+                    <RotateCcw className="w-4 h-4" />
+                    <span>Làm mới</span>
+                  </button>
+                )}
+              </div>
+
+              {isGenerating ? (
+                <div className="aspect-video bg-gray-50 dark:bg-gray-800 rounded-xl flex flex-col items-center justify-center">
+                  <div className="relative mb-4">
+                    <div className="w-20 h-20 border-4 border-primary/30 rounded-full"></div>
+                    <div className="absolute inset-0 w-20 h-20 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                  </div>
+                  <p className="text-base font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                    Đang tạo video...
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    AI đang xử lý ảnh của bạn
+                  </p>
+                </div>
+              ) : generatedVideo ? (
+                <div>
+                  <div className="aspect-video bg-black rounded-xl overflow-hidden mb-4">
+                    <video
+                      src={generatedVideo}
+                      controls
+                      autoPlay
+                      className="w-full h-full"
+                      poster={selectedPreview || undefined}
+                    />
+                  </div>
+                  <div className="flex gap-3">
+                    <button className="flex-1 py-3 bg-gradient-to-r from-primary to-pink-500 text-white text-sm font-bold rounded-xl flex items-center justify-center gap-2 hover:shadow-lg transition-all">
+                      <Download className="w-4 h-4" />
+                      <span>Tải xuống</span>
+                    </button>
+                    <button className="px-6 py-3 border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-sm font-semibold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-all">
+                      Chia sẻ
+                    </button>
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          )}
         </div>
       </div>
     </AppShell>

@@ -1,175 +1,148 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
-import { bannerImages } from '../../lib/images';
-
-interface PromoBanner {
-  id: string;
-  image: string;
-  title: string;
-  description: string;
-  cta: string;
-  link: string;
-  badge?: string;
-}
+import { useNavigate } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 const PhoPromoBanners = () => {
   const navigate = useNavigate();
-  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const promos: PromoBanner[] = [
+  const largeBanner = {
+    title: "Hàng Bạc – Luxury Script Pack",
+    description:
+      "Bộ template cao cấp cho ngành trang sức, nhấn mạnh chất liệu và bảo hành",
+    gradient: "from-yellow-500 via-orange-500 to-yellow-600",
+    icon: "💍",
+    link: "/dao-pho?focus=hang-bac",
+  };
+
+  const promoCards = [
     {
-      id: '1',
-      image: bannerImages.hangBac,
-      title: 'Hàng Bạc – Luxury Templates',
-      description: 'Video cao cấp cho trang sức, đồng hồ, phụ kiện sang trọng',
-      cta: 'Xem templates',
-      link: '/templates?pho=hang-bac',
-      badge: 'Premium',
+      title: "Hàng Sắc – Beauty Trends",
+      description: "Video skincare & makeup trending",
+      gradient: "from-pink-500 to-purple-500",
+      icon: "💄",
+      link: "/dao-pho?focus=hang-sac",
     },
     {
-      id: '2',
-      image: bannerImages.hangSac,
-      title: 'Hàng Sắc – Skincare Hooks 3s',
-      description: 'Hook mạnh mẽ cho mỹ phẩm, skincare, làm đẹp',
-      cta: 'Khám phá ngay',
-      link: '/templates?pho=hang-sac',
-      badge: 'Trending',
+      title: "Hàng Điện – Tech Review",
+      description: "Review nhanh với specs overlay",
+      gradient: "from-blue-500 to-cyan-500",
+      icon: "📱",
+      link: "/dao-pho?focus=hang-dien",
     },
     {
-      id: '3',
-      image: bannerImages.hangDien,
-      title: 'Hàng Điện – Review + Specs',
-      description: 'Review chuyên nghiệp với overlay thông số kỹ thuật',
-      cta: 'Tạo video review',
-      link: '/templates?pho=hang-dien',
-      badge: 'Hot',
+      title: "Phố Thời Trang – Lookbook",
+      description: "Bộ sưu tập mùa hè năng động",
+      gradient: "from-orange-500 to-red-500",
+      icon: "👕",
+      link: "/dao-pho?focus=pho-thoi-trang",
     },
   ];
 
-  const next = () => {
-    setCurrentIndex((prev) => (prev + 1) % promos.length);
-  };
-
-  const prev = () => {
-    setCurrentIndex((prev) => (prev - 1 + promos.length) % promos.length);
-  };
-
   return (
-    <div className="space-y-4">
-      {/* Section Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-            Ưu đãi & Gợi ý theo Phố
+    <div className="container-custom py-12 lg:py-16">
+      <div className="space-y-6">
+        {/* Section Header */}
+        <div className="text-center space-y-2">
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100">
+            Hơi thở <span className="text-gradient">Phố Phường</span>
           </h2>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-            Templates nổi bật được chọn lọc cho từng ngành hàng
+          <p className="text-sm text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            Khám phá các phố nổi bật và template được yêu thích nhất
           </p>
         </div>
 
-        {/* Mobile Navigation */}
-        <div className="flex md:hidden gap-2">
-          <button
-            onClick={prev}
-            className="p-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-            aria-label="Previous"
-          >
-            <ChevronLeft className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-          </button>
-          <button
-            onClick={next}
-            className="p-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-            aria-label="Next"
-          >
-            <ChevronRight className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-          </button>
-        </div>
-      </div>
+        {/* Large Banner */}
+        <div
+          onClick={() => navigate(largeBanner.link)}
+          className="group relative overflow-hidden rounded-2xl aspect-[21/9] cursor-pointer shadow-lg hover:shadow-xl transition-all duration-300"
+        >
+          {/* Background Gradient */}
+          <div
+            className={`absolute inset-0 bg-gradient-to-br ${largeBanner.gradient}`}
+          ></div>
 
-      {/* Promo Cards */}
-      <div className="relative">
-        {/* Desktop: Show all 3 */}
-        <div className="hidden md:grid md:grid-cols-3 gap-6">
-          {promos.map((promo) => (
-            <PromoCard key={promo.id} promo={promo} navigate={navigate} />
-          ))}
-        </div>
-
-        {/* Mobile: Carousel */}
-        <div className="md:hidden">
-          <div className="overflow-hidden">
+          {/* Pattern Overlay */}
+          <div className="absolute inset-0 opacity-10">
             <div
-              className="flex transition-transform duration-300 ease-in-out"
-              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-            >
-              {promos.map((promo) => (
-                <div key={promo.id} className="w-full flex-shrink-0 px-1">
-                  <PromoCard promo={promo} navigate={navigate} />
-                </div>
-              ))}
+              className="absolute inset-0"
+              style={{
+                backgroundImage:
+                  "radial-gradient(circle, white 1px, transparent 1px)",
+                backgroundSize: "20px 20px",
+              }}
+            ></div>
+          </div>
+
+          {/* Hover Overlay */}
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
+
+          {/* Content */}
+          <div className="relative h-full flex items-center justify-between p-6 lg:p-8">
+            <div className="space-y-3 max-w-2xl">
+              <div className="text-5xl lg:text-6xl mb-3 group-hover:scale-110 transition-transform duration-300">
+                {largeBanner.icon}
+              </div>
+              <h3 className="text-2xl lg:text-3xl font-bold text-white">
+                {largeBanner.title}
+              </h3>
+              <p className="text-base lg:text-lg text-white/90">
+                {largeBanner.description}
+              </p>
+
+              {/* CTA Button - appears on hover */}
+              <div className="opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                <button className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-gray-900 font-semibold rounded-lg hover:scale-105 transition-transform text-sm">
+                  <span>Dạo Phố</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Hint Text */}
+            <div className="hidden lg:block opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <p className="text-white/80 text-sm">
+                Khám phá mặt hàng & tạo video →
+              </p>
             </div>
           </div>
-
-          {/* Dots Indicator */}
-          <div className="flex justify-center gap-2 mt-4">
-            {promos.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentIndex(index)}
-                className={`w-2 h-2 rounded-full transition-all ${
-                  index === currentIndex
-                    ? 'bg-primary w-6'
-                    : 'bg-gray-300 dark:bg-gray-700'
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
-          </div>
         </div>
-      </div>
-    </div>
-  );
-};
 
-// Promo Card Component
-const PromoCard = ({ promo, navigate }: { promo: PromoBanner; navigate: any }) => {
-  return (
-    <div
-      onClick={() => navigate(promo.link)}
-      className="group relative overflow-hidden rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:shadow-xl transition-all duration-300 cursor-pointer"
-    >
-      {/* Image */}
-      <div className="relative h-48 overflow-hidden">
-        <img
-          src={promo.image}
-          alt={promo.title}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-        />
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-        
-        {/* Badge */}
-        {promo.badge && (
-          <div className="absolute top-4 right-4 px-3 py-1 bg-primary text-white text-xs font-bold rounded-full shadow-lg">
-            {promo.badge}
-          </div>
-        )}
-      </div>
+        {/* Promo Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {promoCards.map((card, index) => (
+            <div
+              key={index}
+              onClick={() => navigate(card.link)}
+              className="group relative overflow-hidden rounded-xl aspect-[4/5] cursor-pointer shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
+            >
+              {/* Background Gradient */}
+              <div
+                className={`absolute inset-0 bg-gradient-to-br ${card.gradient}`}
+              ></div>
 
-      {/* Content */}
-      <div className="p-6 space-y-3">
-        <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 group-hover:text-primary transition-colors">
-          {promo.title}
-        </h3>
-        <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
-          {promo.description}
-        </p>
-        
-        {/* CTA */}
-        <div className="flex items-center gap-2 text-primary font-semibold text-sm group-hover:gap-3 transition-all">
-          <span>{promo.cta}</span>
-          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              {/* Hover Overlay */}
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
+
+              {/* Content */}
+              <div className="relative h-full flex flex-col justify-between p-5">
+                <div className="text-4xl group-hover:scale-125 group-hover:rotate-12 transition-all duration-300">
+                  {card.icon}
+                </div>
+
+                <div className="space-y-2">
+                  <h4 className="text-xl font-bold text-white">{card.title}</h4>
+                  <p className="text-white/90 text-xs">{card.description}</p>
+
+                  {/* CTA - appears on hover */}
+                  <div className="opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm text-white rounded-full text-sm font-semibold">
+                      <span>Dạo Phố</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../app/providers/AuthProvider';
-import LoginForm from './AuthFormLogin';
-import RegisterForm from './AuthFormSignup';
-import TogglePanel from './TogglePanel';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft, Sparkles } from "lucide-react";
+import { useAuth } from "../../app/providers/AuthProvider";
+import LoginForm from "./AuthFormLogin";
+import RegisterForm from "./AuthFormSignup";
+import TogglePanel from "./TogglePanel";
 
 const AuthCard = () => {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ const AuthCard = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/create');
+      navigate("/create");
     }
   }, [isAuthenticated, navigate]);
 
@@ -21,34 +22,39 @@ const AuthCard = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 via-pink-50 to-purple-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 p-4 relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-3xl animate-pulse delay-500"></div>
+      </div>
+
       {/* Back to Home Button */}
       <button
-        onClick={() => navigate('/')}
-        className="fixed top-6 left-6 z-30 flex items-center gap-2 px-4 py-2 bg-white rounded-lg shadow-md hover:shadow-lg transition-all group"
+        onClick={() => navigate("/")}
+        className="fixed top-6 left-6 z-30 flex items-center gap-2 px-5 py-2.5 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg hover:shadow-xl transition-all group border border-gray-200 dark:border-gray-800"
       >
-        <svg
-          className="w-5 h-5 text-gray-700 group-hover:-translate-x-1 transition-transform"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M10 19l-7-7m0 0l7-7m-7 7h18"
-          />
-        </svg>
-        <span className="text-sm font-medium text-gray-700">Về trang chủ</span>
+        <ArrowLeft className="w-5 h-5 text-gray-700 dark:text-gray-300 group-hover:-translate-x-1 transition-transform" />
+        <span className="text-sm font-semibold text-gray-700 dark:text-gray-300 hidden sm:inline">
+          Về trang chủ
+        </span>
       </button>
 
-      {/* Auth Container */}
-      <div className="relative w-full max-w-4xl h-[600px] bg-white rounded-2xl shadow-2xl overflow-hidden">
+      {/* Logo Badge */}
+      <div className="fixed top-6 right-6 z-30 flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary to-pink-500 rounded-xl shadow-lg">
+        <Sparkles className="w-5 h-5 text-white" />
+        <span className="text-sm font-bold text-white hidden sm:inline">
+          ReVeo AI
+        </span>
+      </div>
+
+      {/* Auth Container - Desktop */}
+      <div className="hidden lg:block relative w-full max-w-5xl h-[650px] bg-white dark:bg-gray-900 rounded-3xl shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-800 animate-slide-up">
         {/* Login Form Container */}
         <div
           className={`absolute top-0 w-1/2 h-full transition-all duration-700 ${
-            isLoginMode ? 'left-0' : 'left-1/2'
+            isLoginMode ? "left-0" : "left-1/2"
           }`}
         >
           <LoginForm isActive={isLoginMode} />
@@ -57,7 +63,7 @@ const AuthCard = () => {
         {/* Register Form Container */}
         <div
           className={`absolute top-0 w-1/2 h-full transition-all duration-700 ${
-            isLoginMode ? 'left-1/2' : 'left-0'
+            isLoginMode ? "left-1/2" : "left-0"
           }`}
         >
           <RegisterForm isActive={!isLoginMode} />
@@ -67,9 +73,50 @@ const AuthCard = () => {
         <TogglePanel isLoginMode={isLoginMode} onToggle={handleToggle} />
       </div>
 
-      {/* Mobile Warning */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 lg:hidden bg-white px-6 py-3 rounded-full shadow-lg">
-        <p className="text-sm text-gray-600">Trải nghiệm tốt nhất trên desktop</p>
+      {/* Auth Container - Mobile */}
+      <div className="lg:hidden w-full max-w-md animate-slide-up">
+        <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-800">
+          {/* Mobile Tabs */}
+          <div className="flex border-b border-gray-200 dark:border-gray-800">
+            <button
+              onClick={() => setIsLoginMode(true)}
+              className={`flex-1 py-4 text-center font-semibold transition-all ${
+                isLoginMode
+                  ? "text-primary border-b-2 border-primary bg-orange-50 dark:bg-orange-900/20"
+                  : "text-gray-500 dark:text-gray-400"
+              }`}
+            >
+              Đăng nhập
+            </button>
+            <button
+              onClick={() => setIsLoginMode(false)}
+              className={`flex-1 py-4 text-center font-semibold transition-all ${
+                !isLoginMode
+                  ? "text-primary border-b-2 border-primary bg-orange-50 dark:bg-orange-900/20"
+                  : "text-gray-500 dark:text-gray-400"
+              }`}
+            >
+              Đăng ký
+            </button>
+          </div>
+
+          {/* Mobile Forms */}
+          <div className="p-6">
+            {isLoginMode ? (
+              <LoginForm isActive={true} />
+            ) : (
+              <RegisterForm isActive={true} />
+            )}
+          </div>
+        </div>
+
+        {/* Mobile Info */}
+        <div className="mt-6 text-center">
+          <p className="text-sm text-gray-600 dark:text-gray-400 flex items-center justify-center gap-2">
+            <Sparkles className="w-4 h-4" />
+            Trải nghiệm tốt nhất trên desktop
+          </p>
+        </div>
       </div>
     </div>
   );
