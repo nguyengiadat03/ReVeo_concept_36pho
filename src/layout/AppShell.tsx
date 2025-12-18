@@ -14,8 +14,7 @@ const AppShell = ({ children }: AppShellProps) => {
   const [isChoosePhoModalOpen, setIsChoosePhoModalOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex transition-colors">
-      {" "}
+    <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 flex transition-colors">
       {/* Desktop Sidebar */}
       <div className="hidden lg:block">
         <Sidebar
@@ -24,6 +23,7 @@ const AppShell = ({ children }: AppShellProps) => {
           className="h-screen sticky top-0"
         />
       </div>
+
       {/* Mobile Drawer */}
       <Drawer
         isOpen={isMobileDrawerOpen}
@@ -35,18 +35,22 @@ const AppShell = ({ children }: AppShellProps) => {
           className="h-full"
         />
       </Drawer>
+
       {/* Choose Pho Modal */}
       <ChoosePhoModal
         isOpen={isChoosePhoModalOpen}
         onClose={() => setIsChoosePhoModalOpen(false)}
       />
-      {/* Main Content */}
+
+      {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
         <Topbar
           onMenuClick={() => setIsMobileDrawerOpen(true)}
           onNewVideoClick={() => setIsChoosePhoModalOpen(true)}
         />
-        <main className="flex-1">{children}</main>
+
+        {/* Main Content with proper container */}
+        <main className="flex-1 overflow-x-hidden">{children}</main>
       </div>
     </div>
   );

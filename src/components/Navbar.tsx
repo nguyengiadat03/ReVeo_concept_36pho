@@ -1,54 +1,109 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Menu, X } from "lucide-react";
+import { cn } from "../lib/utils";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
+  const location = useLocation();
 
   const navLinks = [
-    { name: "Trang chủ", href: "#home" },
-    { name: "36 Phố", href: "#categories" },
-    { name: "Tính năng", href: "#features" },
-    { name: "Cách hoạt động", href: "#how-it-works" },
+    { id: "home", name: "Trang chủ", href: "#home" },
+    { id: "categories", name: "36 Phố", href: "#categories" },
+    { id: "features", name: "Tính năng", href: "#features" },
+    { id: "how-it-works", name: "Cách hoạt động", href: "#how-it-works" },
   ];
 
+  // Track active section on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = navLinks.map((link) => link.id);
+      const scrollPosition = window.scrollY + 100;
+
+      for (const sectionId of sections) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (
+            scrollPosition >= offsetTop &&
+            scrollPosition < offsetTop + offsetHeight
+          ) {
+            setActiveSection(sectionId);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location]);
+
+  const handleNavClick = (id: string) => {
+    setActiveSection(id);
+    setIsMenuOpen(false);
+  };
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-b border-gray-200 dark:border-zinc-800 transition-colors">
       <div className="container-custom">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <a href="#home" className="flex items-center gap-2">
+          <a
+            href="#home"
+            onClick={() => handleNavClick("home")}
+            className="flex items-center gap-2 group"
+          >
             <img
               src="/images/logos/logoR.png"
               alt="ReVeo Studio"
-              className="w-10 h-10 object-contain"
+              className="w-9 h-9 object-contain transition-transform group-hover:scale-105"
             />
-            <span className="text-2xl font-bold text-gray-900">
+            <span className="text-xl font-bold text-gray-900 dark:text-zinc-100">
               Re<span className="text-gradient">Veo</span>
             </span>
           </a>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
               <a
-                key={link.name}
+                key={link.id}
                 href={link.href}
-                className="text-gray-700 hover:text-primary font-medium transition-colors duration-200"
+                onClick={() => handleNavClick(link.id)}
+                className={cn(
+                  "relative px-4 py-2 text-sm font-medium rounded-lg transition-all",
+                  activeSection === link.id
+                    ? "text-primary bg-orange-50 dark:bg-orange-900/20"
+                    : "text-gray-700 dark:text-zinc-300 hover:text-primary hover:bg-gray-50 dark:hover:bg-zinc-800"
+                )}
               >
                 {link.name}
+                {activeSection === link.id && (
+                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 bg-primary rounded-full" />
+                )}
               </a>
             ))}
           </div>
 
           {/* CTA Buttons */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-3">
             <Link
               to="/auth"
-              className="px-6 py-2 text-primary font-semibold hover:text-primary/80 transition-colors"
+              className="px-4 py-2 text-sm font-semibold text-gray-700 dark:text-zinc-300 hover:text-primary transition-colors"
             >
               Đăng nhập
             </Link>
-            <Link to="/auth" className="btn-primary">
+            <Link
+              to="/auth"
+              className="px-5 py-2 bg-gradient-to-r from-primary to-orange-600 text-white text-sm font-semibold rounded-lg hover:shadow-lg hover:shadow-primary/25 transition-all"
+            >
               Dùng thử miễn phí
             </Link>
           </div>
@@ -56,56 +111,48 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 text-gray-700 hover:text-primary transition-colors"
-            aria-label="Toggle menu"
+            className="md:hidden p-2 text-gray-700 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMenuOpen}
           >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              {isMenuOpen ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              )}
-            </svg>
+            {isMenuOpen ? (
+              <X className="w-5 h-5" />
+            ) : (
+              <Menu className="w-5 h-5" />
+            )}
           </button>
         </div>
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-gray-100">
-            <div className="flex flex-col gap-4">
+          <div className="md:hidden py-4 border-t border-gray-200 dark:border-zinc-800 animate-fade-in">
+            <div className="flex flex-col gap-1">
               {navLinks.map((link) => (
                 <a
-                  key={link.name}
+                  key={link.id}
                   href={link.href}
-                  onClick={() => setIsMenuOpen(false)}
-                  className="text-gray-700 hover:text-primary font-medium transition-colors duration-200 py-2"
+                  onClick={() => handleNavClick(link.id)}
+                  className={cn(
+                    "px-4 py-3 text-sm font-medium rounded-lg transition-all",
+                    activeSection === link.id
+                      ? "text-primary bg-orange-50 dark:bg-orange-900/20"
+                      : "text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800"
+                  )}
                 >
                   {link.name}
                 </a>
               ))}
-              <div className="flex flex-col gap-3 pt-4 border-t border-gray-100">
+              <div className="flex flex-col gap-2 pt-4 mt-4 border-t border-gray-200 dark:border-zinc-800">
                 <Link
                   to="/auth"
-                  className="px-6 py-2 text-primary font-semibold hover:text-primary/80 transition-colors text-left"
+                  className="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800 rounded-lg transition-colors text-center"
                 >
                   Đăng nhập
                 </Link>
-                <Link to="/auth" className="btn-primary">
+                <Link
+                  to="/auth"
+                  className="px-4 py-3 bg-gradient-to-r from-primary to-orange-600 text-white text-sm font-semibold rounded-lg hover:shadow-lg hover:shadow-primary/25 transition-all text-center"
+                >
                   Dùng thử miễn phí
                 </Link>
               </div>

@@ -1,58 +1,110 @@
-import { ButtonHTMLAttributes, ReactNode } from 'react';
+import { ButtonHTMLAttributes, ReactNode, forwardRef } from "react";
+import { Loader2 } from "lucide-react";
+import { cn } from "../../lib/utils";
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline';
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: "primary" | "secondary" | "ghost" | "danger";
+  size?: "sm" | "md" | "lg";
   isLoading?: boolean;
+  leftIcon?: ReactNode;
+  rightIcon?: ReactNode;
   children: ReactNode;
 }
 
-const Button = ({
-  variant = 'primary',
-  isLoading = false,
-  children,
-  className = '',
-  disabled,
-  ...props
-}: ButtonProps) => {
-  const baseStyles = 'px-6 py-3 rounded-lg font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2';
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
+      variant = "primary",
+      size = "md",
+      isLoading = false,
+      leftIcon,
+      rightIcon,
+      children,
+      className,
+      disabled,
+      ...props
+    },
+    ref
+  ) => {
+    // Base styles - consistent across all variants
+    const baseStyles = cn(
+      "inline-flex items-center justify-center gap-2",
+      "font-semibold",
+      "transition-all duration-200 ease-smooth",
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
+      "disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none",
+      "active:scale-[0.97] active:transition-transform active:duration-75"
+    );
 
-  const variants = {
-    primary: 'bg-primary text-white hover:shadow-lg hover:shadow-primary/30 hover:scale-105 active:scale-95',
-    secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200',
-    outline: 'bg-transparent border-2 border-primary text-primary hover:bg-primary hover:text-white',
-  };
+    // Variant styles
+    const variantStyles = {
+      primary: cn(
+        "bg-gradient-to-r from-primary to-orange-600",
+        "text-white shadow-md",
+        "hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5",
+        "focus-visible:ring-primary/50",
+        "active:shadow-md active:translate-y-0"
+      ),
+      secondary: cn(
+        "bg-white dark:bg-zinc-900",
+        "text-gray-900 dark:text-zinc-100",
+        "border border-gray-200 dark:border-zinc-800 shadow-sm",
+        "hover:bg-gray-50 dark:hover:bg-zinc-800",
+        "hover:border-gray-300 dark:hover:border-zinc-700",
+        "hover:shadow-md",
+        "focus-visible:ring-gray-300 dark:focus-visible:ring-zinc-700",
+        "active:bg-gray-100 dark:active:bg-zinc-800"
+      ),
+      ghost: cn(
+        "bg-transparent",
+        "text-gray-700 dark:text-zinc-300",
+        "hover:bg-gray-100 dark:hover:bg-zinc-800",
+        "focus-visible:ring-gray-300 dark:focus-visible:ring-zinc-700",
+        "active:bg-gray-200 dark:active:bg-zinc-700"
+      ),
+      danger: cn(
+        "bg-red-600 dark:bg-red-700",
+        "text-white shadow-md",
+        "hover:bg-red-700 dark:hover:bg-red-800",
+        "hover:shadow-lg hover:shadow-red-600/30",
+        "focus-visible:ring-red-500/50",
+        "active:bg-red-800 dark:active:bg-red-900"
+      ),
+    };
 
-  return (
-    <button
-      className={`${baseStyles} ${variants[variant]} ${className}`}
-      disabled={disabled || isLoading}
-      {...props}
-    >
-      {isLoading && (
-        <svg
-          className="animate-spin h-5 w-5"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <circle
-            className="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            strokeWidth="4"
-          ></circle>
-          <path
-            className="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-          ></path>
-        </svg>
-      )}
-      {children}
-    </button>
-  );
-};
+    // Size styles
+    const sizeStyles = {
+      sm: "px-4 py-2 text-sm rounded-lg",
+      md: "px-6 py-3 text-base rounded-xl",
+      lg: "px-8 py-4 text-lg rounded-xl",
+    };
+
+    return (
+      <button
+        ref={ref}
+        className={cn(
+          baseStyles,
+          variantStyles[variant],
+          sizeStyles[size],
+          className
+        )}
+        disabled={disabled || isLoading}
+        {...props}
+      >
+        {isLoading ? (
+          <Loader2 className="w-4 h-4 animate-spin" />
+        ) : (
+          leftIcon && <span className="flex-shrink-0">{leftIcon}</span>
+        )}
+        <span>{children}</span>
+        {!isLoading && rightIcon && (
+          <span className="flex-shrink-0">{rightIcon}</span>
+        )}
+      </button>
+    );
+  }
+);
+
+Button.displayName = "Button";
 
 export default Button;
