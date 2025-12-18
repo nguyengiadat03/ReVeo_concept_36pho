@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navLinks = [
-    { name: 'Trang chủ', href: '#home' },
-    { name: '36 Phố', href: '#categories' },
-    { name: 'Tính năng', href: '#features' },
-    { name: 'Cách hoạt động', href: '#how-it-works' },
+    { name: "Trang chủ", href: "#home" },
+    { name: "36 Phố", href: "#categories" },
+    { name: "Tính năng", href: "#features" },
+    { name: "Cách hoạt động", href: "#how-it-works" },
   ];
 
   return (
@@ -17,9 +17,11 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <a href="#home" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-pink-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">R</span>
-            </div>
+            <img
+              src="/images/logos/logoR.png"
+              alt="ReVeo Studio"
+              className="w-10 h-10 object-contain"
+            />
             <span className="text-2xl font-bold text-gray-900">
               Re<span className="text-gradient">Veo</span>
             </span>
@@ -46,10 +48,7 @@ const Navbar = () => {
             >
               Đăng nhập
             </Link>
-            <Link
-              to="/auth"
-              className="btn-primary"
-            >
+            <Link to="/auth" className="btn-primary">
               Dùng thử miễn phí
             </Link>
           </div>
@@ -106,10 +105,7 @@ const Navbar = () => {
                 >
                   Đăng nhập
                 </Link>
-                <Link
-                  to="/auth"
-                  className="btn-primary"
-                >
+                <Link to="/auth" className="btn-primary">
                   Dùng thử miễn phí
                 </Link>
               </div>

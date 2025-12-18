@@ -1,27 +1,27 @@
 const Footer = () => {
   const footerLinks = {
     product: [
-      { name: 'Tính năng', href: '#features' },
-      { name: '36 Phố Phường', href: '#categories' },
-      { name: 'Bảng giá', href: '#pricing' },
-      { name: 'Template', href: '#templates' },
+      { name: "Tính năng", href: "#features" },
+      { name: "36 Phố Phường", href: "#categories" },
+      { name: "Bảng giá", href: "#pricing" },
+      { name: "Template", href: "#templates" },
     ],
     company: [
-      { name: 'Về chúng tôi', href: '#about' },
-      { name: 'Blog', href: '#blog' },
-      { name: 'Tuyển dụng', href: '#careers' },
-      { name: 'Liên hệ', href: '#contact' },
+      { name: "Về chúng tôi", href: "#about" },
+      { name: "Blog", href: "#blog" },
+      { name: "Tuyển dụng", href: "#careers" },
+      { name: "Liên hệ", href: "#contact" },
     ],
     support: [
-      { name: 'Trung tâm trợ giúp', href: '#help' },
-      { name: 'Hướng dẫn', href: '#guide' },
-      { name: 'API Documentation', href: '#api' },
-      { name: 'Cộng đồng', href: '#community' },
+      { name: "Trung tâm trợ giúp", href: "#help" },
+      { name: "Hướng dẫn", href: "#guide" },
+      { name: "API Documentation", href: "#api" },
+      { name: "Cộng đồng", href: "#community" },
     ],
     legal: [
-      { name: 'Điều khoản sử dụng', href: '#terms' },
-      { name: 'Chính sách bảo mật', href: '#privacy' },
-      { name: 'Chính sách hoàn tiền', href: '#refund' },
+      { name: "Điều khoản sử dụng", href: "#terms" },
+      { name: "Chính sách bảo mật", href: "#privacy" },
+      { name: "Chính sách hoàn tiền", href: "#refund" },
     ],
   };
 
@@ -33,20 +33,20 @@ const Footer = () => {
           {/* Brand Column */}
           <div className="lg:col-span-2 space-y-6">
             <a href="#home" className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-primary to-pink-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">R</span>
-              </div>
-              <span className="text-2xl font-bold text-white">
-                ReVeo
-              </span>
+              <img
+                src="/images/logos/logoR.png"
+                alt="ReVeo Studio"
+                className="w-10 h-10 object-contain"
+              />
+              <span className="text-2xl font-bold text-white">ReVeo</span>
             </a>
             <p className="text-sm leading-relaxed max-w-sm">
-              Nền tảng tạo video bán hàng AI cho 36 Phố Phường TMĐT Việt. 
-              Giúp người bán tăng doanh số với video viral chuyên nghiệp.
+              Nền tảng tạo video bán hàng AI cho 36 Phố Phường TMĐT Việt. Giúp
+              người bán tăng doanh số với video viral chuyên nghiệp.
             </p>
             {/* Social Links */}
             <div className="flex items-center gap-4">
-              {['facebook', 'youtube', 'tiktok', 'zalo'].map((social) => (
+              {["facebook", "youtube", "tiktok", "zalo"].map((social) => (
                 <a
                   key={social}
                   href={`#${social}`}
@@ -54,10 +54,10 @@ const Footer = () => {
                   aria-label={social}
                 >
                   <span className="text-lg">
-                    {social === 'facebook' && '📘'}
-                    {social === 'youtube' && '📺'}
-                    {social === 'tiktok' && '🎵'}
-                    {social === 'zalo' && '💬'}
+                    {social === "facebook" && "📘"}
+                    {social === "youtube" && "📺"}
+                    {social === "tiktok" && "🎵"}
+                    {social === "zalo" && "💬"}
                   </span>
                 </a>
               ))}

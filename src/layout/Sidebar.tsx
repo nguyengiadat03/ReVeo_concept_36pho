@@ -105,9 +105,11 @@ const Sidebar = ({
       {/* Brand */}
       <div className="p-4 border-b border-gray-200 dark:border-gray-800">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 bg-gradient-to-br from-primary to-pink-500 rounded-lg flex items-center justify-center flex-shrink-0">
-            <span className="text-white font-bold text-lg">R</span>
-          </div>
+          <img
+            src="/images/logos/logoR.png"
+            alt="ReVeo Studio"
+            className="w-9 h-9 flex-shrink-0 object-contain"
+          />
           {!isCollapsed && (
             <div className="overflow-hidden">
               <h1 className="text-base font-bold text-gray-900 dark:text-gray-100 whitespace-nowrap">

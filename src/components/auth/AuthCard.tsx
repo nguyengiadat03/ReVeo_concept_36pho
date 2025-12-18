@@ -42,10 +42,14 @@ const AuthCard = () => {
       </button>
 
       {/* Logo Badge */}
-      <div className="fixed top-6 right-6 z-30 flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary to-pink-500 rounded-xl shadow-lg">
-        <Sparkles className="w-5 h-5 text-white" />
-        <span className="text-sm font-bold text-white hidden sm:inline">
-          ReVeo AI
+      <div className="fixed top-6 right-6 z-30 flex items-center gap-3 px-5 py-2.5 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg border border-gray-200 dark:border-gray-800">
+        <img
+          src="/images/logos/logoR.png"
+          alt="ReVeo Studio"
+          className="w-7 h-7 object-contain"
+        />
+        <span className="text-sm font-bold text-gray-900 dark:text-gray-100 hidden sm:inline">
+          ReVeo Studio
         </span>
       </div>
 
