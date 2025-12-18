@@ -112,9 +112,10 @@ const Sidebar = ({
           />
           {!isCollapsed && (
             <div className="overflow-hidden">
-              <h1 className="text-base font-bold text-gray-900 dark:text-gray-100 whitespace-nowrap">
-                ReVeo Studio
+              <h1 className="text-base font-bold whitespace-nowrap text-gray-900 dark:text-gray-100">
+                ReVeo<span className="text-gradient"> Studio</span>
               </h1>
+
               <p className="text-[10px] text-gray-600 dark:text-gray-400 whitespace-nowrap">
                 36 Phố Phường TMĐT
               </p>
